@@ -1,0 +1,30 @@
+.header-container {
+  height: 4rem;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid black;
+  flex-wrap: wrap;
+  padding: 10px 30px;
+}
+
+.banner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.banner h1 {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.banner h5 {
+  font-size: 0.6rem;
+  margin: 0;
+}
+
+.header-items {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}

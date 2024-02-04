@@ -1,0 +1,10 @@
+.calender-view{
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+}
+
+.calender-section{
+    width: 80vw;
+    height: 70vh;
+}
