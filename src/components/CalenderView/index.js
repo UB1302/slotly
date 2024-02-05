@@ -178,7 +178,7 @@ const CalenderView = () => {
                 <div className={styles["view-1"]}>
                     <h3>Test Service</h3>
                     <h6>Timezone: Asia/Calcutta</h6>
-                    <div>
+                    <div className={styles['calendar-section']}>
                         <CalenderComponent
                             selectedDate={selectedDate}
                             handleDateChange={handleDateChange}
@@ -195,10 +195,10 @@ const CalenderView = () => {
                 </div>
             </div>
             <div className={styles["footer"]}>
-                <div>POWERED BY APPOINTO</div>
+                <div className={styles["tag"]}>POWERED BY <a href="#">APPOINTO</a></div>
                 <div>
-                    <button>
-                        Next <span>&#62;</span>
+                    <button className={styles["next-btn"]}>
+                        Next &nbsp;<span>&#62;</span>
                     </button>
                 </div>
             </div>

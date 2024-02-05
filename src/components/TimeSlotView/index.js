@@ -24,6 +24,8 @@ const timeSlotVariants = {
         name: "60-min",
     },
 };
+const Months = {"0":"JANUARY","1":"FEBRUARY","2":"MARCH","3":"APRIL","4":"MAY","5":"JUNE","6":"JULY","7":"AUGUST","8":"SEPTEMER","9":"OCTOBER","10":"NOVEMBER","11":"DECEMBER"}
+const Days = {"0":"SUNDAY","1":"MONDAY","2":"TUESDAY","3":"WEDNESDAY","4":"THURSDAY","5":"FRIDAY","6":"SATURDAY"}
 const initialHours = 9;
 const initialMinutes = 0;
 const numberOfSlots = 60;
@@ -135,7 +137,7 @@ const TimeSlotView = ({
     return (
         <div className={styles["time-slot-container"]}>
             <h6>SELECT FROM VARIANTS</h6>
-            <div>
+            <div className={styles["select-container"]}>
                 <select name="" onChange={handleSlotVariant}>
                     {Object.values(timeSlotVariants).map(
                         (timeSlotVariantObj) => (
@@ -147,7 +149,7 @@ const TimeSlotView = ({
                 </select>
             </div>
             <hr />
-            <h6>DAY, DATE - AVAILABLE SLOTS</h6>
+            <h6>{`${Days[selectedDate.getDay()]},${(Months[selectedDate.getMonth()]).substring(0,3)} ${selectedDate.getDate()}`} - AVAILABLE SLOTS</h6>
             <div className={styles["time-slot-section"]}>
                 {/* show available slots */}
                 {Object.values(listOfTimeSlots).map((timeStampObj) => {

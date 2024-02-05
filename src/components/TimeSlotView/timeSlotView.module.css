@@ -1,8 +1,33 @@
-.time-slot-container{
+.time-slot-container {
     height: 100%;
+    font-weight: bold;
 }
 
-.time-slot-section{
-    height: 30%;
+.select-container select {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 10px;
+    border: 1px solid #CDD0DE;
+    background-color: #FAFAFC;
+    color: #378760;
+    font-weight: bold;
+    margin-bottom: 0.8rem;
+}
+
+hr{
+    border: 0.5px solid #CDD0DE;
+}
+
+.time-slot-section {
+    height: 50%;
     overflow-y: scroll;
 }
+
+@media (max-width: 1021px) {
+    /* … */
+
+    .time-slot-section {
+        height: 35vh;
+        overflow-y: scroll;
+    }
+  }

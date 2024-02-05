@@ -4,7 +4,7 @@ import styles from "./calenderComponent.module.css"
 
 const CalenderComponent = ({selectedDate,handleDateChange}) => {
     return (
-        <div>
+        <div className={styles["calendar-container"]}>
             <Calendar onChange={handleDateChange} value={selectedDate}/>
         </div>
     )

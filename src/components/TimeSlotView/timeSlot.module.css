@@ -1,28 +1,34 @@
 .time-slot{
     border: 1px solid #378760;
-    margin-bottom: 0.5rem;
-    padding: 0.5rem;
+    margin-bottom: 0.8rem;
+    padding: 0.8rem;
     background-color: #FFFFFF;
     cursor: pointer;
+    border-radius: 10px;
+    display: flex;
+    text-align: center;
 }
 
 .time-slot-selected{
     border: 1px solid #378760;
-    margin-bottom: 0.5rem;
-    padding: 0.5rem;
+    margin-bottom: 0.8rem;
+    padding: 0.8rem;
     background-color: #378760;
     cursor: pointer;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    color: #FFFFFF;
+    text-align: center;
 }
 
 .time-slot-container{
-    
     margin: auto;
     width: 50%;
 }
 
-.time-slot-container-selected{
-    
-    margin: auto;
-    width: 50%;
+@media (max-width: 570px) {
+    .time-slot-container{
+        width: 100%;
+    }
 }
-

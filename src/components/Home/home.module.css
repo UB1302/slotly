@@ -2,9 +2,19 @@
     display: flex;
     justify-content: center;
     align-items: center;    
+    margin-top: 6rem;
 }
 
 .calender-section{
-    width: 80vw;
+    /* width: 80vw; */
     height: 70vh;
 }
+
+@media (max-width: 1021px) {
+    /* … */
+
+    .calender-section{
+        width: 65vw;
+        height: 100%;
+    }
+  }
