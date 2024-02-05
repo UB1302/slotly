@@ -3,26 +3,68 @@ import CalenderComponent from "./CalenderComponent";
 import TimeSlotView from "../TimeSlotView";
 import { useEffect, useState } from "react";
 
+const initialHours = 9
+const initialMinutes = 0
+const numberOfSlots = 60
+const initialTimeSlotVariant = 15
+
 const CalenderView = () => {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [result, setResult] = useState(null);
+    const [selectedTimeSlotVariant,setSelectedTimeSlotVariant] = useState(initialTimeSlotVariant)
+    const [timeSlots,setTimeSlots] = useState({})
+    
 
-    // useEffect(()=>{
-    //     getAvailableSlots()
-    //     console.log(result)
-    // },[result])
+    useEffect(()=>{
+        const initialDateTimestamp = new Date();
+        // console.log(initialDateTimestamp)
+        initialDateTimestamp.setHours(initialHours);        // Set hours to 9 (for example)
+        initialDateTimestamp.setMinutes(initialMinutes);      // Set minutes to 0 (for example)
+        initialDateTimestamp.setSeconds(0);      // Set seconds to 0 (for example)
+        initialDateTimestamp.setMilliseconds(0)
+        // console.log(initialDateTimestamp)
+        createSlots(selectedTimeSlotVariant,initialDateTimestamp)
+    },[])
 
     useEffect(() => {
+        
+        let dateTime = new Date(selectedDate)
+        dateTime.setHours(initialHours);        // Set hours to 9 (for example)
+        dateTime.setMinutes(initialMinutes);      // Set minutes to 0 (for example)
+        dateTime.setSeconds(0);      // Set seconds to 0 (for example)
+        dateTime.setMilliseconds(0)
+        
+        createSlots(selectedTimeSlotVariant,dateTime)
         getAvailableSlots();
     }, [selectedDate]);
 
     const handleDateChange = async (value) => {
+        console.log(typeof value)
         setSelectedDate(value);
+
     };
+
+    const createSlots = (timeInterval,initialDateTimestamp) => {
+        console.log(initialDateTimestamp)
+        // let initialDateTime = new Date(initialDateTimestamp)
+        let initialDateTime = initialDateTimestamp
+        let localTimeSlots = timeSlots
+        localTimeSlots[initialDateTime.toString()] = {"isAvailable": 0}
+        for(let i = 0; i < numberOfSlots-2; i++){
+            initialDateTime.setMinutes(initialDateTime.getMinutes() + timeInterval);
+            console.log(initialDateTimestamp)
+            let dateTimeString = initialDateTime.toString()
+            localTimeSlots[dateTimeString] = {"isAvailable": 0}
+        }
+        console.log(localTimeSlots)
+        setTimeSlots({...localTimeSlots})
+
+    }
 
     const getAvailableSlots = async () => {
         try {
             const { formattedSelectedDate, nextDate } = getFromattedDates();
+            console.log({ formattedSelectedDate, nextDate })
             // yesterday.setDate(yesterday.getDate() - 1)
 
             let apiEndPoint = `https://app.appointo.me/scripttag/mock_timeslots?start_date=${formattedSelectedDate}&end_date=${nextDate}`;
@@ -60,20 +102,17 @@ const CalenderView = () => {
                                             []
                                         )
                                     );
-                                    console.log(result)
+                                    // console.log(result)
                                     // Convert the Uint8Array to a string
                                     const text = new TextDecoder().decode(
                                         result
                                     );
-                                    // Process the text data here
-                                    console.log(text);
-                                    console.log(typeof text)
-                                    console.log(JSON.parse(text))
+                                    // if array is empty handle the case
                                     availableSlots = JSON.parse(text)
+                                    handleAvailableSlot(availableSlots)
                                 } else {
-                                    // Store the chunk in the chunks array
-                                    chunks.push(value);
-                                    // Continue reading from the stream
+                                    
+                                    chunks.push(value);                                    
                                     read();
                                 }
                             })
@@ -94,21 +133,60 @@ const CalenderView = () => {
             // // handle empty results
         } catch (error) {
             // if api break show some message
+            console.log(error)
         }
     };
 
     const getFromattedDates = () => {
-        const year = selectedDate.getFullYear();
-        const month = String(selectedDate.getMonth() + 1).padStart(2, "0");
-        const day = String(selectedDate.getDate()).padStart(2, "0");
+        console.log(selectedDate)
+        let year = selectedDate.getFullYear();
+        let month = String(selectedDate.getMonth() + 1).padStart(2, "0");
+        let day = String(selectedDate.getDate()).padStart(2, "0");
         const formattedSelectedDate = `${year}-${month}-${day}`;
-
-        const nextDate = new Date(formattedSelectedDate);
+        console.log(formattedSelectedDate)
+        let nextDate = new Date(formattedSelectedDate);
         nextDate.setDate(nextDate.getDate() + 1);
+        year = nextDate.getFullYear();
+        month = String(nextDate.getMonth() + 1).padStart(2, "0");
+        day = String(nextDate.getDate()).padStart(2, "0");
+        nextDate = `${year}-${month}-${day}`;
+
         console.log(nextDate);
 
         return { formattedSelectedDate, nextDate };
     };
+
+    const handleAvailableSlot = (availableSlots) => {
+        
+        availableSlots = availableSlots[0]['slots']
+        // console.log(availableSlots)
+        let localTimeSlots = timeSlots
+        console.log(localTimeSlots)
+        for(let i=0; i < availableSlots.length; i++){
+            let startTime = availableSlots[i]['start_time']
+            // console.log(startTime)
+            let endTime = availableSlots[i]['end_time']
+            let endTimeDateObj = new Date(endTime)
+            let startTimeDateObj = new Date(startTime)
+            // console.log(startTimeDateObj)
+            const timeDifferenceInMinutes =  ((endTimeDateObj - startTimeDateObj)/1000)/60
+            // console.log(timeDifferenceInMinutes)
+            const multiplier = timeDifferenceInMinutes/initialTimeSlotVariant
+            // console.log(multiplier)
+            for(let j = 0; j < multiplier; j++){
+                startTimeDateObj.setMinutes(startTimeDateObj.getMinutes() + initialTimeSlotVariant);
+                console.log(startTimeDateObj)
+                let dateTimeString = startTimeDateObj.toString()
+                if(localTimeSlots[dateTimeString]){
+                    localTimeSlots[dateTimeString]["isAvailable"] = 1
+                }
+                 
+            }
+
+        }
+        console.log(localTimeSlots)
+        setTimeSlots({...localTimeSlots})
+    }
 
     return (
         <div className={styles["calendar-container"]}>
