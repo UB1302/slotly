@@ -2,6 +2,8 @@ import styles from "./calenderView.module.css";
 import CalenderComponent from "./CalenderComponent";
 import TimeSlotView from "../TimeSlotView";
 import { useEffect, useState } from "react";
+import Modal from "../Modal";
+import { toast } from 'react-toastify'
 
 const initialHours = 9;
 const initialMinutes = 0;
@@ -15,6 +17,9 @@ const CalenderView = () => {
     );
    
     const [timeSlots, setTimeSlots] = useState({});
+    const [selectedTimeStamp,setSelectedTimeStamp] = useState('')
+    const [isLoading,setIsLoading] = useState(true)
+    const [showModal,setShowModal] = useState(false)
 
     useEffect(() => {
         let dateTime = new Date(selectedDate);
@@ -56,6 +61,7 @@ const CalenderView = () => {
 
     const getAvailableSlots = async (localTimeSlots) => {
         try {
+            setIsLoading(true)
             const { formattedSelectedDate, nextDate } = getFromattedDates();
 
             let apiEndPoint = `https://app.appointo.me/scripttag/mock_timeslots?start_date=${formattedSelectedDate}&end_date=${nextDate}`;
@@ -167,10 +173,24 @@ const CalenderView = () => {
                     startTimeDateObj.getMinutes() + initialTimeSlotVariant
                 );
             }
-        }
-       
+        }       
         setTimeSlots({ ...localTimeSlots });
+        setIsLoading(false)
     };
+
+    const handleNextBtn = () => {
+        if(!selectedTimeStamp){
+            // show toast please select a time slot to proceed
+            toast(`Please select a time slot to proceed`, {
+                position: "bottom-right",
+                autoClose: 5000,
+                type: "warning",                
+                });
+            return
+        }
+        setShowModal(true)
+        console.log(selectedTimeStamp)
+    }
 
     return (
         <div className={styles["calendar-container"]}>
@@ -191,17 +211,21 @@ const CalenderView = () => {
                         selectedTimeSlotVariant={selectedTimeSlotVariant}
                         setSelectedTimeSlotVariant={setSelectedTimeSlotVariant}
                         selectedDate={selectedDate}
+                        setSelectedTimeStamp = {setSelectedTimeStamp}
+                        isLoading = {isLoading}
+                        setTimeSlots = {setTimeSlots}
                     />
                 </div>
             </div>
             <div className={styles["footer"]}>
                 <div className={styles["tag"]}>POWERED BY <a href="#">APPOINTO</a></div>
                 <div>
-                    <button className={styles["next-btn"]}>
+                    <button className={styles["next-btn"]} onClick={handleNextBtn}>
                         Next &nbsp;<span>&#62;</span>
                     </button>
                 </div>
             </div>
+            {showModal && <Modal setShowModal = {setShowModal}/>}
         </div>
     );
 };

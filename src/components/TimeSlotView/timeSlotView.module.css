@@ -20,7 +20,7 @@ hr{
 
 .time-slot-section {
     height: 50%;
-    overflow-y: scroll;
+    overflow-y: scroll;    
 }
 
 @media (max-width: 1021px) {

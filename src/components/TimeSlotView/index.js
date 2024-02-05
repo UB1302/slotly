@@ -36,6 +36,9 @@ const TimeSlotView = ({
     selectedTimeSlotVariant,
     setSelectedTimeSlotVariant,
     selectedDate,
+    setSelectedTimeStamp,
+    isLoading,
+    setTimeSlots
 }) => {
     const [listOfTimeSlots, setListOfTimeSlots] = useState({});
 
@@ -88,10 +91,10 @@ const TimeSlotView = ({
                 let startTimeAmPm =
                     availableStartTimeObj.getHours() >= 12 ? `PM` : `AM`;
                 
-                let startTime = `${availableStartTimeObj.getHours()}:${availableStartTimeObj.getMinutes()} ${startTimeAmPm}`;
+                let startTime = `${availableStartTimeObj.getHours()}:${availableStartTimeObj.getMinutes() === 0 ? "00" : availableStartTimeObj.getMinutes()} ${startTimeAmPm}`;
                 let endTimeAmPm =
                     availableEndTimeObj.getHours() >= 12 ? `PM` : `AM`;
-                let endTime = `${availableEndTimeObj.getHours()}:${availableEndTimeObj.getMinutes()} ${endTimeAmPm}`;
+                let endTime = `${availableEndTimeObj.getHours()}:${availableEndTimeObj.getMinutes() === 0 ? "00" : availableEndTimeObj.getMinutes()} ${endTimeAmPm}`;
                 localListOfTimeSlots[startTimeObj] = {
                     startDateTimeStamp: startTimeObj.toString(),
                     endDateTimeStamp: availableEndTimeObj.toString(),
@@ -107,12 +110,14 @@ const TimeSlotView = ({
         }
         
         setListOfTimeSlots({ ...localListOfTimeSlots });
+        return
     };
 
     const handleSlotVariant = (e) => {
         let timeSlotVariant = e.target.value;
         timeSlotVariant = parseInt(timeSlotVariant);
         setSelectedTimeSlotVariant(timeSlotVariant);
+        return
     };
 
     const handleTimeSlotSelection = (startDateTimeStamp) => {
@@ -129,9 +134,29 @@ const TimeSlotView = ({
 
         }else{
             localListOfTimeSlots[startDateTimeStamp]["isSelected"] = 1
+            setSelectedTimeStamp(startDateTimeStamp)
+            let startDateTimeStampObj = new Date(startDateTimeStamp)
+            let localTimeSlots = {...timeSlots}
+            console.log(localTimeSlots)
+            const multiplier = selectedTimeSlotVariant / initialTimeSlotVariant;
+                        
+            // let timeObj = new Date(startTimeObj);
+            
+            for (let j = 0; j < multiplier; j++) {                
+
+                let dateTimeString = startDateTimeStampObj.toString();            
+                localTimeSlots[dateTimeString]["isAvailable"] = 0
+                startDateTimeStampObj.setMinutes(
+                    startDateTimeStampObj.getMinutes() + initialTimeSlotVariant
+                );
+            }
+            console.log(localTimeSlots)
+            // setTimeSlots({...localTimeSlots})
+            // set timeslots
         }
 
         setListOfTimeSlots({ ...localListOfTimeSlots });
+        return
     };
 
     return (
@@ -150,9 +175,10 @@ const TimeSlotView = ({
             </div>
             <hr />
             <h6>{`${Days[selectedDate.getDay()]},${(Months[selectedDate.getMonth()]).substring(0,3)} ${selectedDate.getDate()}`} - AVAILABLE SLOTS</h6>
+            {isLoading ? <div>loading</div> : 
             <div className={styles["time-slot-section"]}>
                 {/* show available slots */}
-                {Object.values(listOfTimeSlots).map((timeStampObj) => {
+                {Object.values(listOfTimeSlots).length ? Object.values(listOfTimeSlots).map((timeStampObj) => {
                     return (
                         <div className="">
                             <TimeSlot
@@ -163,8 +189,9 @@ const TimeSlotView = ({
                             />
                         </div>
                     );
-                })}
+                }) : <div>Sorry! No slot available</div>}
             </div>
+}
         </div>
     );
 };

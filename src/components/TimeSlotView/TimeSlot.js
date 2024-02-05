@@ -8,7 +8,7 @@ const TimeSlot = ({timeStampObj,handleTimeSlotSelection}) => {
                 <div className={styles["time-slot-container-selected"]}>
                     {`${timeStampObj.startTime} - ${timeStampObj.endTime}`}
                 </div>
-                <div>tick</div>
+                <div className={styles["tick"]}><img src="./tick.svg"/></div>
             </div>
         )
     }else{
