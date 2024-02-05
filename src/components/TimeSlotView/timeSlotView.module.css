@@ -1,0 +1,8 @@
+.time-slot-container{
+    height: 100%;
+}
+
+.time-slot-section{
+    height: 30%;
+    overflow-y: scroll;
+}

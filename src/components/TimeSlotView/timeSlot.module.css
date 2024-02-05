@@ -1,7 +1,28 @@
-.time-slot-container{
+.time-slot{
+    border: 1px solid #378760;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
     background-color: #FFFFFF;
+    cursor: pointer;
+}
+
+.time-slot-selected{
+    border: 1px solid #378760;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    background-color: #378760;
+    cursor: pointer;
+}
+
+.time-slot-container{
+    
+    margin: auto;
+    width: 50%;
 }
 
 .time-slot-container-selected{
-    background-color: #378760;
+    
+    margin: auto;
+    width: 50%;
 }
+

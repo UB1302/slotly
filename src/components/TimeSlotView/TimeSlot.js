@@ -1,13 +1,25 @@
 import styles from "./timeSlot.module.css"
 
 const TimeSlot = ({timeStampObj,handleTimeSlotSelection}) => {
-    return (
-        <div>
-            <div className={timeStampObj.isSelected ? styles["time-slot-container-selected"] :  styles["time-slot-container"]} onClick={() => handleTimeSlotSelection(timeStampObj.startDateTimeStamp)}>
-                {`${timeStampObj.startTime}-${timeStampObj.endTime}`}
+
+    if(timeStampObj.isSelected){
+        return (
+            <div className={styles["time-slot-selected"]} onClick={() => handleTimeSlotSelection(timeStampObj.startDateTimeStamp)}>
+                <div className={styles["time-slot-container"]}>
+                    {`${timeStampObj.startTime}-${timeStampObj.endTime}`}
+                </div>
             </div>
-        </div>
-    )
+        )
+    }else{
+        return (
+            <div className={styles["time-slot"]}  onClick={() => handleTimeSlotSelection(timeStampObj.startDateTimeStamp)}>
+                <div className={styles["time-slot-container"]}>
+                    {`${timeStampObj.startTime}-${timeStampObj.endTime}`}
+                </div>
+            </div>
+        )
+    }
+   
 }
 
 export default TimeSlot
