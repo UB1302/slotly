@@ -135,22 +135,22 @@ const TimeSlotView = ({
         }else{
             localListOfTimeSlots[startDateTimeStamp]["isSelected"] = 1
             setSelectedTimeStamp(startDateTimeStamp)
-            let startDateTimeStampObj = new Date(startDateTimeStamp)
-            let localTimeSlots = {...timeSlots}
-            console.log(localTimeSlots)
-            const multiplier = selectedTimeSlotVariant / initialTimeSlotVariant;
+            // let startDateTimeStampObj = new Date(startDateTimeStamp)
+            // let localTimeSlots = {...timeSlots}
+            // console.log(localTimeSlots)
+            // const multiplier = selectedTimeSlotVariant / initialTimeSlotVariant;
                         
-            // let timeObj = new Date(startTimeObj);
+            // // let timeObj = new Date(startTimeObj);
             
-            for (let j = 0; j < multiplier; j++) {                
+            // for (let j = 0; j < multiplier; j++) {                
 
-                let dateTimeString = startDateTimeStampObj.toString();            
-                localTimeSlots[dateTimeString]["isAvailable"] = 0
-                startDateTimeStampObj.setMinutes(
-                    startDateTimeStampObj.getMinutes() + initialTimeSlotVariant
-                );
-            }
-            console.log(localTimeSlots)
+            //     let dateTimeString = startDateTimeStampObj.toString();            
+            //     localTimeSlots[dateTimeString]["isAvailable"] = 0
+            //     startDateTimeStampObj.setMinutes(
+            //         startDateTimeStampObj.getMinutes() + initialTimeSlotVariant
+            //     );
+            // }
+            // console.log(localTimeSlots)
             // setTimeSlots({...localTimeSlots})
             // set timeslots
         }
