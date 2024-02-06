@@ -40,26 +40,28 @@ const CalenderView = () => {
     };
 
     const createSlots = (timeInterval, initialDateTimestamp) => {
-        let initialDateTime = initialDateTimestamp;
-        let localTimeSlots = {};
-        localTimeSlots[initialDateTime.toString()] = {
-            isAvailable: 0,
-            dateTimeStamp: initialDateTime.toString(),
-            isSelected: 0,
-        };
-        for (let i = 0; i < numberOfSlots - 1; i++) {
-            initialDateTime.setMinutes(
-                initialDateTime.getMinutes() + timeInterval
-            );
-            let dateTimeString = initialDateTime.toString();
-            localTimeSlots[dateTimeString] = {
+        try {
+            let initialDateTime = initialDateTimestamp;
+            let localTimeSlots = {};
+            localTimeSlots[initialDateTime.toString()] = {
                 isAvailable: 0,
-                dateTimeStamp: dateTimeString,
+                dateTimeStamp: initialDateTime.toString(),
                 isSelected: 0,
             };
-        }
+            for (let i = 0; i < numberOfSlots - 1; i++) {
+                initialDateTime.setMinutes(
+                    initialDateTime.getMinutes() + timeInterval
+                );
+                let dateTimeString = initialDateTime.toString();
+                localTimeSlots[dateTimeString] = {
+                    isAvailable: 0,
+                    dateTimeStamp: dateTimeString,
+                    isSelected: 0,
+                };
+            }
 
-        return { ...localTimeSlots };
+            return { ...localTimeSlots };
+        } catch (error) {}
     };
 
     const getAvailableSlots = async (localTimeSlots) => {
@@ -131,61 +133,67 @@ const CalenderView = () => {
     };
 
     const getFromattedDates = () => {
-        let year = selectedDate.getFullYear();
-        let month = String(selectedDate.getMonth() + 1).padStart(2, "0");
-        let day = String(selectedDate.getDate()).padStart(2, "0");
-        const formattedSelectedDate = `${year}-${month}-${day}`;
-        let nextDate = new Date(formattedSelectedDate);
-        nextDate.setDate(nextDate.getDate() + 1);
-        year = nextDate.getFullYear();
-        month = String(nextDate.getMonth() + 1).padStart(2, "0");
-        day = String(nextDate.getDate()).padStart(2, "0");
-        nextDate = `${year}-${month}-${day}`;
+        try {
+            let year = selectedDate.getFullYear();
+            let month = String(selectedDate.getMonth() + 1).padStart(2, "0");
+            let day = String(selectedDate.getDate()).padStart(2, "0");
+            const formattedSelectedDate = `${year}-${month}-${day}`;
+            let nextDate = new Date(formattedSelectedDate);
+            nextDate.setDate(nextDate.getDate() + 1);
+            year = nextDate.getFullYear();
+            month = String(nextDate.getMonth() + 1).padStart(2, "0");
+            day = String(nextDate.getDate()).padStart(2, "0");
+            nextDate = `${year}-${month}-${day}`;
 
-        return { formattedSelectedDate, nextDate };
+            return { formattedSelectedDate, nextDate };
+        } catch (error) {}
     };
 
     const handleAvailableSlot = (availableSlots, localTimeSlots) => {
-        availableSlots = availableSlots[0]["slots"];
+        try {
+            availableSlots = availableSlots[0]["slots"];
 
-        for (let i = 0; i < availableSlots.length; i++) {
-            let startTime = availableSlots[i]["start_time"];
-            let endTime = availableSlots[i]["end_time"];
-            let endTimeDateObj = new Date(endTime);
-            let startTimeDateObj = new Date(startTime);
+            for (let i = 0; i < availableSlots.length; i++) {
+                let startTime = availableSlots[i]["start_time"];
+                let endTime = availableSlots[i]["end_time"];
+                let endTimeDateObj = new Date(endTime);
+                let startTimeDateObj = new Date(startTime);
 
-            const timeDifferenceInMinutes =
-                (endTimeDateObj - startTimeDateObj) / 1000 / 60;
+                const timeDifferenceInMinutes =
+                    (endTimeDateObj - startTimeDateObj) / 1000 / 60;
 
-            const multiplier = timeDifferenceInMinutes / initialTimeSlotVariant;
+                const multiplier =
+                    timeDifferenceInMinutes / initialTimeSlotVariant;
 
-            for (let j = 0; j < multiplier; j++) {
-                let dateTimeString = startTimeDateObj.toString();
+                for (let j = 0; j < multiplier; j++) {
+                    let dateTimeString = startTimeDateObj.toString();
 
-                if (localTimeSlots[dateTimeString]) {
-                    localTimeSlots[dateTimeString]["isAvailable"] = 1;
+                    if (localTimeSlots[dateTimeString]) {
+                        localTimeSlots[dateTimeString]["isAvailable"] = 1;
+                    }
+                    startTimeDateObj.setMinutes(
+                        startTimeDateObj.getMinutes() + initialTimeSlotVariant
+                    );
                 }
-                startTimeDateObj.setMinutes(
-                    startTimeDateObj.getMinutes() + initialTimeSlotVariant
-                );
             }
-        }
-        setTimeSlots({ ...localTimeSlots });
-        // setIsLoading(false)
-        dispatch(setLoader({ isLoading: false }));
+            setTimeSlots({ ...localTimeSlots });
+            dispatch(setLoader({ isLoading: false }));
+        } catch (error) {}
     };
 
     const handleNextBtn = () => {
-        if (!selectedTimeStamp) {
-            // show toast please select a time slot to proceed
-            toast(`Please select a time slot to proceed`, {
-                position: "bottom-right",
-                autoClose: 5000,
-                type: "warning",
-            });
-            return;
-        }
-        setShowModal(true);
+        try {
+            if (!selectedTimeStamp) {
+                // show toast please select a time slot to proceed
+                toast(`Please select a time slot to proceed`, {
+                    position: "bottom-right",
+                    autoClose: 5000,
+                    type: "warning",
+                });
+                return;
+            }
+            setShowModal(true);
+        } catch (error) {}
     };
 
     return (

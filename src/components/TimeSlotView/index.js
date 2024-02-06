@@ -71,73 +71,78 @@ const TimeSlotView = ({
     }, [timeSlots, selectedTimeSlotVariant]);
 
     const generateTimeSlotList = () => {
-        let dateTime = new Date(selectedDate);
-        dateTime.setHours(initialHours);
-        dateTime.setMinutes(initialMinutes);
-        dateTime.setSeconds(0);
-        dateTime.setMilliseconds(0);
-        let localListOfTimeSlots = {};
-        let startTimeObj = dateTime;
+        try {
+            let dateTime = new Date(selectedDate);
+            dateTime.setHours(initialHours);
+            dateTime.setMinutes(initialMinutes);
+            dateTime.setSeconds(0);
+            dateTime.setMilliseconds(0);
+            let localListOfTimeSlots = {};
+            let startTimeObj = dateTime;
 
-        for (
-            let i = 0;
-            i <
-            numberOfSlots / (selectedTimeSlotVariant / initialTimeSlotVariant);
-            i++
-        ) {
-            const multiplier = selectedTimeSlotVariant / initialTimeSlotVariant;
+            for (
+                let i = 0;
+                i <
+                numberOfSlots /
+                    (selectedTimeSlotVariant / initialTimeSlotVariant);
+                i++
+            ) {
+                const multiplier =
+                    selectedTimeSlotVariant / initialTimeSlotVariant;
 
-            let isAvailable = 1;
-            let timeObj = new Date(startTimeObj);
+                let isAvailable = 1;
+                let timeObj = new Date(startTimeObj);
 
-            for (let j = 0; j < multiplier; j++) {
-                let dateTimeString = timeObj.toString();
-                if (!timeSlots[dateTimeString]?.["isAvailable"]) {
-                    isAvailable = 0;
-                    break;
+                for (let j = 0; j < multiplier; j++) {
+                    let dateTimeString = timeObj.toString();
+                    if (!timeSlots[dateTimeString]?.["isAvailable"]) {
+                        isAvailable = 0;
+                        break;
+                    }
+                    timeObj.setMinutes(
+                        timeObj.getMinutes() + initialTimeSlotVariant
+                    );
                 }
-                timeObj.setMinutes(
-                    timeObj.getMinutes() + initialTimeSlotVariant
+                if (isAvailable) {
+                    let availableStartTimeObj = new Date(startTimeObj);
+
+                    let availableEndTimeObj = new Date(startTimeObj);
+                    availableEndTimeObj.setMinutes(
+                        availableEndTimeObj.getMinutes() +
+                            selectedTimeSlotVariant
+                    );
+                    let startTimeAmPm =
+                        availableStartTimeObj.getHours() >= 12 ? `PM` : `AM`;
+
+                    let startTime = `${availableStartTimeObj.getHours()}:${
+                        availableStartTimeObj.getMinutes() === 0
+                            ? "00"
+                            : availableStartTimeObj.getMinutes()
+                    } ${startTimeAmPm}`;
+                    let endTimeAmPm =
+                        availableEndTimeObj.getHours() >= 12 ? `PM` : `AM`;
+                    let endTime = `${availableEndTimeObj.getHours()}:${
+                        availableEndTimeObj.getMinutes() === 0
+                            ? "00"
+                            : availableEndTimeObj.getMinutes()
+                    } ${endTimeAmPm}`;
+                    localListOfTimeSlots[startTimeObj] = {
+                        startDateTimeStamp: startTimeObj.toString(),
+                        endDateTimeStamp: availableEndTimeObj.toString(),
+                        isSelected: 0,
+                        startTime: startTime,
+                        endTime: endTime,
+                    };
+                }
+
+                startTimeObj.setMinutes(
+                    startTimeObj.getMinutes() + selectedTimeSlotVariant
                 );
             }
-            if (isAvailable) {
-                let availableStartTimeObj = new Date(startTimeObj);
 
-                let availableEndTimeObj = new Date(startTimeObj);
-                availableEndTimeObj.setMinutes(
-                    availableEndTimeObj.getMinutes() + selectedTimeSlotVariant
-                );
-                let startTimeAmPm =
-                    availableStartTimeObj.getHours() >= 12 ? `PM` : `AM`;
-
-                let startTime = `${availableStartTimeObj.getHours()}:${
-                    availableStartTimeObj.getMinutes() === 0
-                        ? "00"
-                        : availableStartTimeObj.getMinutes()
-                } ${startTimeAmPm}`;
-                let endTimeAmPm =
-                    availableEndTimeObj.getHours() >= 12 ? `PM` : `AM`;
-                let endTime = `${availableEndTimeObj.getHours()}:${
-                    availableEndTimeObj.getMinutes() === 0
-                        ? "00"
-                        : availableEndTimeObj.getMinutes()
-                } ${endTimeAmPm}`;
-                localListOfTimeSlots[startTimeObj] = {
-                    startDateTimeStamp: startTimeObj.toString(),
-                    endDateTimeStamp: availableEndTimeObj.toString(),
-                    isSelected: 0,
-                    startTime: startTime,
-                    endTime: endTime,
-                };
-            }
-
-            startTimeObj.setMinutes(
-                startTimeObj.getMinutes() + selectedTimeSlotVariant
-            );
-        }
-
-        setListOfTimeSlots({ ...localListOfTimeSlots });
-        return;
+            setListOfTimeSlots({ ...localListOfTimeSlots });
+            return;
+        } catch (error) {}
     };
 
     const handleSlotVariant = (e) => {
@@ -148,34 +153,38 @@ const TimeSlotView = ({
     };
 
     const handleTimeSlotSelection = (startDateTimeStamp) => {
-        let localListOfTimeSlots = listOfTimeSlots;
-        let selectedValue = "";
+        try {
+            let localListOfTimeSlots = listOfTimeSlots;
+            let selectedValue = "";
 
-        for (let key in localListOfTimeSlots) {
-            if (localListOfTimeSlots[key]["isSelected"] === 1) {
-                selectedValue = key;
+            for (let key in localListOfTimeSlots) {
+                if (localListOfTimeSlots[key]["isSelected"] === 1) {
+                    selectedValue = key;
+                }
+                localListOfTimeSlots[key]["isSelected"] = 0;
             }
-            localListOfTimeSlots[key]["isSelected"] = 0;
-        }
-        if (selectedValue === startDateTimeStamp) {
-        } else {
-            localListOfTimeSlots[startDateTimeStamp]["isSelected"] = 1;
-            setSelectedTimeStamp(startDateTimeStamp);
-            let startDateTimeStampObj = new Date(startDateTimeStamp);
-            let localTimeSlots = { ...timeSlots };
-            const multiplier = selectedTimeSlotVariant / initialTimeSlotVariant;
+            if (selectedValue === startDateTimeStamp) {
+            } else {
+                localListOfTimeSlots[startDateTimeStamp]["isSelected"] = 1;
+                setSelectedTimeStamp(startDateTimeStamp);
+                let startDateTimeStampObj = new Date(startDateTimeStamp);
+                let localTimeSlots = { ...timeSlots };
+                const multiplier =
+                    selectedTimeSlotVariant / initialTimeSlotVariant;
 
-            for (let j = 0; j < multiplier; j++) {
-                let dateTimeString = startDateTimeStampObj.toString();
-                localTimeSlots[dateTimeString]["isAvailable"] = 0;
-                startDateTimeStampObj.setMinutes(
-                    startDateTimeStampObj.getMinutes() + initialTimeSlotVariant
-                );
+                for (let j = 0; j < multiplier; j++) {
+                    let dateTimeString = startDateTimeStampObj.toString();
+                    localTimeSlots[dateTimeString]["isAvailable"] = 0;
+                    startDateTimeStampObj.setMinutes(
+                        startDateTimeStampObj.getMinutes() +
+                            initialTimeSlotVariant
+                    );
+                }
             }
-        }
 
-        setListOfTimeSlots({ ...localListOfTimeSlots });
-        return;
+            setListOfTimeSlots({ ...localListOfTimeSlots });
+            return;
+        } catch (error) {}
     };
 
     return (
