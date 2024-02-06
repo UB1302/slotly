@@ -12,27 +12,22 @@
     flex-wrap: wrap;
     height: 100%;
     box-sizing: border-box;
-    /* border-radius: 10px 0 0 0; */
 }
 
 .view-1 {
-    /* flex-grow: 1; */
     background-color: #ebebf0;
     padding: 1rem;
     height: 100%;
     box-sizing: border-box;
-    /* width: 50%; */
     width: 500px;
     border-radius: 10px 0 0 10px;
 }
 
 .view-2 {
-    /* flex-grow: 1; */
     background-color: #ffffff;
     padding: 1rem;
     height: 100%;
     box-sizing: border-box;
-    /* width: 50%; */
     width: 500px;
     border-radius: 0px 10px 10px 0;
 }
@@ -57,6 +52,7 @@
     padding: 0.8rem 2rem;
     border-radius: 10px;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .next-btn span {
@@ -73,18 +69,30 @@
     color: #ffffff;
 }
 
-.calendar-section{
+.calendar-section {
     display: flex;
     justify-content: center;
 }
 
-@media (max-width: 1021px) {
-    /* … */
+.info {
+    width: 350px;
+    margin: 0 auto;
+}
 
-    .view-1{
+.info h6 {
+    font-weight: 300;
+    margin-top: 1px;
+}
+
+.info h6 span {
+    font-weight: bold;
+}
+
+@media (max-width: 1021px) {
+    .view-1 {
         width: 100%;
     }
-    .view-2{
+    .view-2 {
         width: 100%;
     }
-  }
+}

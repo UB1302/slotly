@@ -3,8 +3,8 @@ import CalenderComponent from "./CalenderComponent";
 import TimeSlotView from "../TimeSlotView";
 import { useEffect, useState } from "react";
 import Modal from "../Modal";
-import { toast } from 'react-toastify'
-import { useSelector, useDispatch } from "react-redux"
+import { toast } from "react-toastify";
+import { useSelector, useDispatch } from "react-redux";
 import { setLoader } from "../../redux/reducer/loader";
 
 const initialHours = 9;
@@ -17,12 +17,12 @@ const CalenderView = () => {
     const [selectedTimeSlotVariant, setSelectedTimeSlotVariant] = useState(
         initialTimeSlotVariant
     );
-   
+
     const [timeSlots, setTimeSlots] = useState({});
-    const [selectedTimeStamp,setSelectedTimeStamp] = useState('')    
-    const [showModal,setShowModal] = useState(false)
-    const loaderState = useSelector(state => state.loaderReducer)
-    const dispatch = useDispatch()
+    const [selectedTimeStamp, setSelectedTimeStamp] = useState("");
+    const [showModal, setShowModal] = useState(false);
+    const loaderState = useSelector((state) => state.loaderReducer);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         let dateTime = new Date(selectedDate);
@@ -33,7 +33,6 @@ const CalenderView = () => {
         dateTime.setMilliseconds(0);
         let localTimeSlots = createSlots(initialTimeSlotVariant, dateTime);
         getAvailableSlots(localTimeSlots);
-        console.log(loaderState)
     }, [selectedDate]);
 
     const handleDateChange = async (value) => {
@@ -65,9 +64,7 @@ const CalenderView = () => {
 
     const getAvailableSlots = async (localTimeSlots) => {
         try {
-            // setIsLoading(true)
-            // dispatch(setLoader({isLoading: true}))    
-            dispatch(setLoader({isLoading: true}))    
+            dispatch(setLoader({ isLoading: true }));
             const { formattedSelectedDate, nextDate } = getFromattedDates();
 
             let apiEndPoint = `https://app.appointo.me/scripttag/mock_timeslots?start_date=${formattedSelectedDate}&end_date=${nextDate}`;
@@ -119,10 +116,6 @@ const CalenderView = () => {
                             })
                             .catch((error) => {
                                 // Handle any errors that occur during reading
-                                console.error(
-                                    "Error reading from stream:",
-                                    error
-                                );
                             });
                     }
                     read();
@@ -134,78 +127,78 @@ const CalenderView = () => {
             // // handle empty results
         } catch (error) {
             // if api break show some message
-            console.log(error);
         }
     };
 
-    const getFromattedDates = () => {        
+    const getFromattedDates = () => {
         let year = selectedDate.getFullYear();
         let month = String(selectedDate.getMonth() + 1).padStart(2, "0");
         let day = String(selectedDate.getDate()).padStart(2, "0");
-        const formattedSelectedDate = `${year}-${month}-${day}`;        
+        const formattedSelectedDate = `${year}-${month}-${day}`;
         let nextDate = new Date(formattedSelectedDate);
         nextDate.setDate(nextDate.getDate() + 1);
         year = nextDate.getFullYear();
         month = String(nextDate.getMonth() + 1).padStart(2, "0");
         day = String(nextDate.getDate()).padStart(2, "0");
         nextDate = `${year}-${month}-${day}`;
-        
+
         return { formattedSelectedDate, nextDate };
     };
 
     const handleAvailableSlot = (availableSlots, localTimeSlots) => {
         availableSlots = availableSlots[0]["slots"];
- 
+
         for (let i = 0; i < availableSlots.length; i++) {
-            let startTime = availableSlots[i]["start_time"];            
+            let startTime = availableSlots[i]["start_time"];
             let endTime = availableSlots[i]["end_time"];
             let endTimeDateObj = new Date(endTime);
             let startTimeDateObj = new Date(startTime);
-            
+
             const timeDifferenceInMinutes =
                 (endTimeDateObj - startTimeDateObj) / 1000 / 60;
-            
+
             const multiplier = timeDifferenceInMinutes / initialTimeSlotVariant;
-            
+
             for (let j = 0; j < multiplier; j++) {
-                
                 let dateTimeString = startTimeDateObj.toString();
-                
+
                 if (localTimeSlots[dateTimeString]) {
-                    
                     localTimeSlots[dateTimeString]["isAvailable"] = 1;
                 }
                 startTimeDateObj.setMinutes(
                     startTimeDateObj.getMinutes() + initialTimeSlotVariant
                 );
             }
-        }       
+        }
         setTimeSlots({ ...localTimeSlots });
         // setIsLoading(false)
-        dispatch(setLoader({isLoading: false}))
+        dispatch(setLoader({ isLoading: false }));
     };
 
     const handleNextBtn = () => {
-        if(!selectedTimeStamp){
+        if (!selectedTimeStamp) {
             // show toast please select a time slot to proceed
             toast(`Please select a time slot to proceed`, {
                 position: "bottom-right",
                 autoClose: 5000,
-                type: "warning",                
-                });
-            return
+                type: "warning",
+            });
+            return;
         }
-        setShowModal(true)
-        console.log(selectedTimeStamp)
-    }
+        setShowModal(true);
+    };
 
     return (
         <div className={styles["calendar-container"]}>
             <div className={styles["split-view"]}>
                 <div className={styles["view-1"]}>
-                    <h3>Test Service</h3>
-                    <h6>Timezone: Asia/Calcutta</h6>
-                    <div className={styles['calendar-section']}>
+                    <div className={styles["info"]}>
+                        <h3>Test Service</h3>
+                        <h6>
+                            <span>Timezone:</span> Asia/Calcutta
+                        </h6>
+                    </div>
+                    <div className={styles["calendar-section"]}>
                         <CalenderComponent
                             selectedDate={selectedDate}
                             handleDateChange={handleDateChange}
@@ -218,20 +211,25 @@ const CalenderView = () => {
                         selectedTimeSlotVariant={selectedTimeSlotVariant}
                         setSelectedTimeSlotVariant={setSelectedTimeSlotVariant}
                         selectedDate={selectedDate}
-                        setSelectedTimeStamp = {setSelectedTimeStamp}                        
-                        setTimeSlots = {setTimeSlots}
+                        setSelectedTimeStamp={setSelectedTimeStamp}
+                        setTimeSlots={setTimeSlots}
                     />
                 </div>
             </div>
             <div className={styles["footer"]}>
-                <div className={styles["tag"]}>POWERED BY <a href="#">APPOINTO</a></div>
+                <div className={styles["tag"]}>
+                    POWERED BY <a href="#">APPOINTO</a>
+                </div>
                 <div>
-                    <button className={styles["next-btn"]} onClick={handleNextBtn}>
+                    <button
+                        className={styles["next-btn"]}
+                        onClick={handleNextBtn}
+                    >
                         Next &nbsp;<span>&#62;</span>
                     </button>
                 </div>
             </div>
-            {showModal && <Modal setShowModal = {setShowModal}/>}
+            {showModal && <Modal setShowModal={setShowModal} />}
         </div>
     );
 };

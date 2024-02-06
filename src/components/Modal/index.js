@@ -1,7 +1,6 @@
 const Modal = ({setShowModal}) => {
     function handleClick(e) {
-        if (e.target.classList.contains("backdrop")) {
-            // setSelectedImage(null);
+        if (e.target.classList.contains("backdrop")) {            
             setShowModal(false)
         }
     }
