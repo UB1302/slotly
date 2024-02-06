@@ -5,7 +5,7 @@ const Header = () => {
         <div className={styles["header-container"]}>
             <div className={styles["banner"]}>
                 <div>
-                    <img src="./time.png" />
+                    <img src="./time.png" alt="logo"/>
                 </div>
                 <div>
                     <h1>Company Name</h1>
@@ -27,7 +27,7 @@ const Header = () => {
                 <div className={styles["contact-us"]}>Contact us</div>
                 <div className={styles["share-link"]}>
                     <div>
-                        <img src="./link.png" />
+                        <img src="./link.png" alt="link"/>
                     </div>
                     <div>Share link</div>
                 </div>

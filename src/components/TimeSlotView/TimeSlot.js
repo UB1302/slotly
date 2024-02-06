@@ -13,7 +13,7 @@ const TimeSlot = ({ timeStampObj, handleTimeSlotSelection }) => {
                     {`${timeStampObj.startTime} - ${timeStampObj.endTime}`}
                 </div>
                 <div className={styles["tick"]}>
-                    <img src="./tick.svg" />
+                    <img src="./tick.svg" alt="tick"/>
                 </div>
             </div>
         );

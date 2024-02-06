@@ -2,7 +2,7 @@ import styles from "./loader.module.css"
 
 const Loader = () => {
     return (
-        <div className={styles['loader-container']}><img src="./loader.svg"/></div>
+        <div className={styles['loader-container']}><img src="./loader.svg" alt="loader"/></div>
     )
 }
 

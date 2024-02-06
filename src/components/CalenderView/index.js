@@ -4,7 +4,7 @@ import TimeSlotView from "../TimeSlotView";
 import { useEffect, useState } from "react";
 import Modal from "../Modal";
 import { toast } from "react-toastify";
-import { useSelector, useDispatch } from "react-redux";
+import {useDispatch } from "react-redux";
 import { setLoader } from "../../redux/reducer/loader";
 
 const initialHours = 9;
@@ -20,8 +20,7 @@ const CalenderView = () => {
 
     const [timeSlots, setTimeSlots] = useState({});
     const [selectedTimeStamp, setSelectedTimeStamp] = useState("");
-    const [showModal, setShowModal] = useState(false);
-    const loaderState = useSelector((state) => state.loaderReducer);
+    const [showModal, setShowModal] = useState(false);    
     const dispatch = useDispatch();
 
     useEffect(() => {
