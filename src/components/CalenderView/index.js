@@ -4,6 +4,8 @@ import TimeSlotView from "../TimeSlotView";
 import { useEffect, useState } from "react";
 import Modal from "../Modal";
 import { toast } from 'react-toastify'
+import { useSelector, useDispatch } from "react-redux"
+import { setLoader } from "../../redux/reducer/loader";
 
 const initialHours = 9;
 const initialMinutes = 0;
@@ -17,9 +19,10 @@ const CalenderView = () => {
     );
    
     const [timeSlots, setTimeSlots] = useState({});
-    const [selectedTimeStamp,setSelectedTimeStamp] = useState('')
-    const [isLoading,setIsLoading] = useState(true)
+    const [selectedTimeStamp,setSelectedTimeStamp] = useState('')    
     const [showModal,setShowModal] = useState(false)
+    const loaderState = useSelector(state => state.loaderReducer)
+    const dispatch = useDispatch()
 
     useEffect(() => {
         let dateTime = new Date(selectedDate);
@@ -30,6 +33,7 @@ const CalenderView = () => {
         dateTime.setMilliseconds(0);
         let localTimeSlots = createSlots(initialTimeSlotVariant, dateTime);
         getAvailableSlots(localTimeSlots);
+        console.log(loaderState)
     }, [selectedDate]);
 
     const handleDateChange = async (value) => {
@@ -61,7 +65,9 @@ const CalenderView = () => {
 
     const getAvailableSlots = async (localTimeSlots) => {
         try {
-            setIsLoading(true)
+            // setIsLoading(true)
+            // dispatch(setLoader({isLoading: true}))    
+            dispatch(setLoader({isLoading: true}))    
             const { formattedSelectedDate, nextDate } = getFromattedDates();
 
             let apiEndPoint = `https://app.appointo.me/scripttag/mock_timeslots?start_date=${formattedSelectedDate}&end_date=${nextDate}`;
@@ -175,7 +181,8 @@ const CalenderView = () => {
             }
         }       
         setTimeSlots({ ...localTimeSlots });
-        setIsLoading(false)
+        // setIsLoading(false)
+        dispatch(setLoader({isLoading: false}))
     };
 
     const handleNextBtn = () => {
@@ -211,8 +218,7 @@ const CalenderView = () => {
                         selectedTimeSlotVariant={selectedTimeSlotVariant}
                         setSelectedTimeSlotVariant={setSelectedTimeSlotVariant}
                         selectedDate={selectedDate}
-                        setSelectedTimeStamp = {setSelectedTimeStamp}
-                        isLoading = {isLoading}
+                        setSelectedTimeStamp = {setSelectedTimeStamp}                        
                         setTimeSlots = {setTimeSlots}
                     />
                 </div>

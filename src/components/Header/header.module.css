@@ -13,6 +13,10 @@
   gap: 1rem;
 }
 
+.banner img{
+  height: 32px;
+}
+
 .banner h1 {
   font-size: 1rem;
   margin: 0;

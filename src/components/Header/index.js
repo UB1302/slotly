@@ -6,7 +6,7 @@ const Header = () => {
     return (
         <div className={styles['header-container']}>
             <div className={styles['banner']}>
-                <div>logo</div>
+                <div><img src="./time.png"/></div>
                 <div>
                     <h1>Company Name</h1>
                     <h5>Your slogan goes here</h5>

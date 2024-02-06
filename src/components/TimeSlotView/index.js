@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import TimeSlot from "./TimeSlot";
 import styles from "./timeSlotView.module.css";
 import Loader from "../Loader";
+import { useSelector, useDispatch } from "react-redux"
 
 const timeSlotVariants = {
     15: {
@@ -38,10 +39,11 @@ const TimeSlotView = ({
     setSelectedTimeSlotVariant,
     selectedDate,
     setSelectedTimeStamp,
-    isLoading,
+    // isLoading,
     setTimeSlots
 }) => {
     const [listOfTimeSlots, setListOfTimeSlots] = useState({});
+    const {isLoading} = useSelector(state => state.loaderReducer)
 
     useEffect(() => {        
         if (Object.values(timeSlots).length) {
