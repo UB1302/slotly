@@ -1,0 +1,17 @@
+.calender-view {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 6rem;
+}
+
+.calender-section {
+    height: 70vh;
+}
+
+@media (max-width: 1021px) {
+    .calender-section {
+        width: 65vw;
+        height: 100%;
+    }
+}
