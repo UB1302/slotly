@@ -12,5 +12,9 @@
 - > npm start
 
 
+### Note:
+- I have used redux only to showcase that I can use it. Otherwise there was no requirement of state management library in this App flow currently.
+
+
 ###### For the demo please use the link provided in the repository details.
 
