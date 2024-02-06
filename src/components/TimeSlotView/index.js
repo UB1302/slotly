@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import TimeSlot from "./TimeSlot";
 import styles from "./timeSlotView.module.css";
+import Loader from "../Loader";
 
 const timeSlotVariants = {
     15: {
@@ -175,7 +176,7 @@ const TimeSlotView = ({
             </div>
             <hr />
             <h6>{`${Days[selectedDate.getDay()]},${(Months[selectedDate.getMonth()]).substring(0,3)} ${selectedDate.getDate()}`} - AVAILABLE SLOTS</h6>
-            {isLoading ? <div>loading</div> : 
+            {isLoading ? <Loader/> : 
             <div className={styles["time-slot-section"]}>
                 {/* show available slots */}
                 {Object.values(listOfTimeSlots).length ? Object.values(listOfTimeSlots).map((timeStampObj) => {
@@ -195,5 +196,5 @@ const TimeSlotView = ({
         </div>
     );
 };
-
+{/* <img className="pyxl-absolute pyxl-top-0 pyxl-left-0 pyxl-food-classify-spinner-animate pyxl-w-full pyxl-h-full " src="https://spyne-static.s3.amazonaws.com/console/project/orange-ellipse.svg" /> */}
 export default TimeSlotView;
