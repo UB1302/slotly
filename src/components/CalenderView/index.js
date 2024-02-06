@@ -209,6 +209,7 @@ const CalenderView = () => {
                         <CalenderComponent
                             selectedDate={selectedDate}
                             handleDateChange={handleDateChange}
+                            setSelectedDate = {setSelectedDate}
                         />
                     </div>
                 </div>
